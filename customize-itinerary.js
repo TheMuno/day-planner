@@ -62,9 +62,10 @@ $saveItineraryBtn.addEventListener('click', e => {
 });
 
 async function saveAttractionsDB() {  
-    if (!localStorage['ak-attractions-saved']) return;
+    if (!localStorage['ak-attractions-saved'] || !localStorage['ak-userMail']) return;
     const savedAttractions = localStorage['ak-attractions-saved'];
-
+    const userMail = localStorage['ak-userMail'];
+    
     const existingMarkers = doc(db, 'locationsData', `user-${userMail}`);
     const dayObj = {
         savedAttractions,
