@@ -22,13 +22,11 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);  
 
 
-
 window.addEventListener('load', async () => {
   await Clerk.load();
   
   const $loginBtn = document.querySelector('[data-ak="clerk-login"]');
   const $saveBtn = document.querySelector('[data-ak="save-itinerary"]');
-  const $saveBtnMsg = document.querySelector('[data-ak="save-wrap-msg"]');
 
   if (Clerk.user) {
     $saveBtn.closest('.ak-save-wrap').classList.remove('hidden');
@@ -42,14 +40,6 @@ window.addEventListener('load', async () => {
     Clerk.openSignIn({
       redirectUrl: window.location.pathname,
     });
-  });
-
-  $saveBtn.addEventListener('click', e => {
-    $saveBtnMsg.classList.remove('hidden');
-    setTimeout(()=>{
-      $saveBtn.style.height = '';
-      $saveBtnMsg.classList.add('hidden');
-    },1000);
   });
 });
 
