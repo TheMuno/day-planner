@@ -81,13 +81,6 @@ async function saveAttractionsDB() {
     }
 }
 
-async function createUserInFirebase(userMail) {
-  const userRef = doc(db, 'locationsData', `user-${userMail}`);
-  const userSnap = await getDoc(userRef);
-  if (userSnap.exists() || !userMail) return;
-  await setDoc(userRef, { CreatedAt: serverTimestamp() }); 
-}
-
 // $titleInfoSkeletonWrap.classList.remove('hidden');
 
 !async function initMap() {
