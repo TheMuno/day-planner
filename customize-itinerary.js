@@ -65,14 +65,27 @@ async function saveAttractionsDB() {
     if (!localStorage['ak-attractions-saved'] || !localStorage['ak-userMail']) return;
     const savedAttractions = localStorage['ak-attractions-saved'];
     const userMail = localStorage['ak-userMail'];
-    
-    const existingMarkers = doc(db, 'locationsData', `user-${userMail}`);
-    const dayObj = {
-        savedAttractions,
-        ModifiedAt: serverTimestamp(),
-    };
 
-    await updateDoc(existingMarkers, dayObj);
+    const userRef = doc(db, 'locationsData', `user-${userMail}`);
+    const userSnap = await getDoc(userRef);
+
+    const dayObj = { savedAttractions };
+
+    if (userSnap.exists()) {
+      dayObj.ModifiedAt = serverTimestamp();
+      await updateDoc(userRef, dayObj);
+    }
+    else {
+      dayObj.CreatedAt = serverTimestamp();
+      await setDoc(userRef, dayObj);
+    }
+}
+
+async function createUserInFirebase(userMail) {
+  const userRef = doc(db, 'locationsData', `user-${userMail}`);
+  const userSnap = await getDoc(userRef);
+  if (userSnap.exists() || !userMail) return;
+  await setDoc(userRef, { CreatedAt: serverTimestamp() }); 
 }
 
 // $titleInfoSkeletonWrap.classList.remove('hidden');
