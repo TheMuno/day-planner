@@ -120,6 +120,8 @@ async function createUserInFirebase(userMail) {
         return;
       }
 
+      addedAttractions += 1;
+
       let { name, coords } = attraction;
 
       if (coords && coords.trim() && Number(coords.trim().split(',')?.[0])) {
@@ -150,6 +152,9 @@ async function createUserInFirebase(userMail) {
       }
 
       if (!name.startsWith('ak-grouped')) continue;
+
+      addedAttractions += 1;
+
       JSON.parse(group || '[]').forEach(attraction => {
         const { displayName, location: { lat, lng }, editorialSummary } = attraction;
         const marker = createMarker(displayName, { lat, lng }, editorialSummary);
@@ -258,6 +263,8 @@ const markerArr = [];
         alert('Sorry! Number of Locations Exceeded\nPlease Sign-In to Proceed');
         return;
       }
+
+      addedAttractions += 1;
 
       const { place } = res;
       await place.fetchFields({
@@ -565,6 +572,9 @@ function restoreSavedAttractions() {
   }
 
   if (!localStorage['ak-attractions-saved']) return;
+
+  addedAttractions += 1;
+
   const savedAttractions = JSON.parse(localStorage['ak-attractions-saved']);
   for (const [slide, attractions] of Object.entries(savedAttractions)) {
     const slideNum = Number(slide.match(/\d+/)[0]);
